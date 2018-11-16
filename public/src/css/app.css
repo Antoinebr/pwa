@@ -1,0 +1,12 @@
+.text-center {
+  text-align: center;
+}
+
+.drawer-option {
+  padding: 16px;
+}
+
+.shared-moment-card {
+  display: block!important;
+  margin: auto!important;
+}
