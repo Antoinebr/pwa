@@ -8,14 +8,12 @@ const {
     catchErrors
 } = require('../handlers/errorHandlers');
 
-
+// postCtrl
 router.get("/posts", catchErrors(postCtrl.getPosts));
-
 router.post("/posts", postCtrl.upload, postCtrl.resize, catchErrors(postCtrl.createPost));
-
 router.delete("/posts", catchErrors(postCtrl.deletePostById));
 
-
+// subscriptionsCtrl
 router.get('/subscriptions', catchErrors(subscriptionsCtrl.getSubs));
 router.post('/subscriptions', catchErrors(subscriptionsCtrl.createSub));
 router.delete('/subscriptions', catchErrors(subscriptionsCtrl.deleteSubById));
