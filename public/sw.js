@@ -2,7 +2,6 @@ importScripts('/src/js/idb.js');
 
 importScripts('/src/js/utilitydB.js');
 
-
 const STATIC_CACHE_NAME = "static-v39";
 
 const DYNAMIC_CACHE_NAME = "dynamic-v8";
@@ -29,8 +28,6 @@ const STATIC_ASSETS = [
     '/src/js/feed.js',
     '/src/js/material.min.js',
     'src/js/utilitydB.js',
-    // IMG
-    '/src/images/main-image.jpg'
 ];
 
 
@@ -192,7 +189,7 @@ const staleAndRevalidateIndb = async (event) => {
         const networkResponse = await fetch(event.request);
 
         // we don't want to cache POST / DELETE... requests
-        if (event.request.method !== "GET" ) return networkResponse;
+        if (event.request.method !== "GET") return networkResponse;
 
         if (networkResponse.ok || networkResponse.type === "opaque") {
 
@@ -204,13 +201,13 @@ const staleAndRevalidateIndb = async (event) => {
 
             // From firebase we get an object and not an array
             // then we have to transform it : for (key in json)
-            
-            for (let i = 0; i < json.length; i++) { 
+
+            for (let i = 0; i < json.length; i++) {
 
                 await writeDataInDb('posts', json[i]);
             }
 
-        
+
         }
 
         return networkResponse;
@@ -377,13 +374,13 @@ self.addEventListener('sync', function (event) {
 
             for (let dt of data) {
 
-                try {   
+                try {
 
                     const postData = new FormData();
                     postData.append('id', dt.id);
                     postData.append('title', dt.title);
                     postData.append('location', dt.location);
-                    postData.append('file', dt.picture,`${dt.id}.png`);
+                    postData.append('file', dt.picture, `${dt.id}.png`);
 
                     const res = await fetch('http://localhost:4590/posts', {
                         method: 'post',
@@ -413,54 +410,6 @@ self.addEventListener('sync', function (event) {
     }
 
 });
-
-
-
-
-
-/**
- * @todo should returns a promise with the available window
- */
-const takeActionAfterClick = () => {
-
-    return new Promise((resolve, reject) => {
-
-        (async () => {
-
-            try {
-
-                const clients = await clients.matchAll({
-                    includeUncontrolled: true,
-                    type: 'window'
-                });
-                console.log('Client is ', clients);
-                clients.matchAll()
-                    .then(r => console.log(r))
-                    .catch(e => console.log(e))
-
-                console.log("clients", clients);
-
-                const client = clients.find(c => c.visibilityState === "visible");
-
-                if (typeof client !== undefined) {
-
-                    return resolve(client);
-
-                }
-
-                return reject("No client found");
-
-            } catch (e) {
-
-                return reject('Something wrong happened ', e);
-
-            }
-
-        })();
-
-    });
-
-}
 
 
 
@@ -552,15 +501,28 @@ self.addEventListener('notificationclick', function (event) {
 
         console.log(action);
 
-        takeActionAfterClick()
-            .then(client => {
-                client.navigate('http://localhost:8080');
-                client.focus();
-                clients.openWindow('http://localhost:8080');
-                notification.close();
-            })
-            .catch(e => console.log(e))
-
     }
+
+
+    event.waitUntil(
+
+        clients.matchAll({
+            type: "window"
+        })
+        .then(clientList => {
+
+            for (let client of clientList) {
+
+                if (client.url == '/' && 'focus' in client) return client.focus();
+
+            }
+
+            if (clients.openWindow) {
+                clients.openWindow('http://localhost:8080/');
+            }
+        })
+
+    );
+
 
 });

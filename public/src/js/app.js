@@ -63,7 +63,7 @@ const configurePushSub = async () => {
             displayConfirmNotification();
 
         } else {
-            // we have a sub 
+            console.log('we should have a sub');
         }
 
     } catch (e) {

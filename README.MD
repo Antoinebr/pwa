@@ -13,8 +13,9 @@ The front-end is pure JavaScript and the backend API is built with express / Seq
 ### #1 Install the dependencies 
 
 ```bash
+cd ./public
 npm install
-cd ./api
+cd ../api
 npm install
 ```
 
