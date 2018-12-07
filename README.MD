@@ -13,18 +13,15 @@ The front-end is pure JavaScript and the backend API is built with express / Seq
 ### #1 Install the dependencies 
 
 ```bash
-cd ./public
-npm install
-cd ../api
-npm install
+make install
 ```
 
 ### #2 Generate vapid keys for push notifications 
 
-In the ```api``` folder
+
 
 ```
-npx web-push generate-vapid-keys
+make vapid-keys
 ``` 
 
 Grab the keys and put the in in ```variables.env``` file ( see below 👇)
@@ -41,15 +38,14 @@ VAPID_PRIVATE_KEY=SGadD3ksa4-sdsddsdst_dhDvbdsfdsl84XfFa_tRA
 ### #4 Start the front-end project 
 
 ```bash 
-npm run start 
+make start-front
 ```
 
 ### #5 Start the back-end 
 
 
 ```bash 
-cd ./api
-npm run start 
+make start-api
 ```
 
 <hr>
@@ -66,8 +62,7 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
-	
 	"title": "Lorem :)",
 	"content": " Lorem ipsum dolor sit met, qui at desert mandamus, adduce ullum apeirian mea at. Eu mel vide saltando vituperata, sonet quidam deterruisset te qui. Te cum vivendum explicate abhorrent. Id venom argumentum vel. Ut lorem bocent hendrerit eam"
-}'
+  }'
 ```
