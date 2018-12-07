@@ -22,4 +22,4 @@ variables.env.now
 # Project specific
 *.sqlite
 /api/public/uploads/*.png
-/api/data/*
+/api/data/*.sqlite
